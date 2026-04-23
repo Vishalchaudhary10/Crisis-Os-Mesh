@@ -1,44 +1,287 @@
-# Crisis OS
+# Crisis OS 🚨
 
-Crisis OS is an offline-first, decentralized mesh communication network and emergency coordination platform designed for disaster scenarios where traditional infrastructure (cell towers, internet) has failed.
+### Offline-First Mesh Communication System for Android
 
-## 🚀 Features
-* **Decentralized Mesh Networking**: Google Nearby Connections API powering a peer-to-peer (P2P) auto-healing communication backbone.
-* **Offline Messaging**: Send and receive encrypted messages securely without an internet connection.
-* **Emergency Broadcasting (SOS)**: Dedicated critical channels to coordinate disaster aid, supplies, and real-time alerts.
-* **Location Mapping**: Offline maps with Danger Zones and Checkpoint sharing.
-* **Distributed Contact Discovery**: Alias-based connection handshakes and proximity discovery.
+Crisis OS is a real-time, offline-first Android communication system designed for scenarios where traditional internet connectivity is unavailable or unreliable. The application enables peer-to-peer messaging using device-to-device mesh networking, allowing users to discover nearby devices, establish connections, and exchange messages without relying on centralized servers, cellular networks, or Wi-Fi infrastructure.
+
+This project demonstrates a robust implementation of Clean Architecture in a real-world Android application, integrating low-level networking, reactive state management, and modular system design.
+
+---
+
+## 📌 Overview
+
+In emergency situations such as natural disasters, remote expeditions, or network outages, communication becomes a critical challenge. Crisis OS addresses this problem by leveraging the Nearby Connections API to create a decentralized mesh network between Android devices.
+
+Each device acts as both a client and a relay node, enabling message propagation across multiple peers. This allows communication to extend beyond direct Bluetooth or Wi-Fi range through multi-hop transmission.
+
+---
+
+## 🚀 Core Features
+
+### 📡 Offline Mesh Networking
+
+* Peer-to-peer communication without internet dependency
+* Automatic device discovery and connection handling
+* Multi-hop message propagation through intermediate devices
+
+### 💬 Real-Time Messaging
+
+* Send and receive messages instantly across connected peers
+* Message delivery states (sending, queued, sent, failed)
+* Persistent message storage for reliability
+
+### 🔍 Device Discovery & Connection Management
+
+* Dynamic discovery of nearby devices
+* Connection request and acceptance workflow
+* Live peer count and connection status updates
+
+### 💾 Local Data Persistence
+
+* Messages stored locally using Room Database
+* Automatic synchronization between UI and database
+* Reliable state recovery across app restarts
+
+### ⚡ Reactive UI System
+
+* Built using Kotlin Coroutines and Flow
+* Real-time UI updates based on state changes
+* Efficient handling of asynchronous data streams
+
+### 🧠 Clean Architecture Implementation
+
+* Strict separation of concerns
+* Scalable and maintainable code structure
+* Fully decoupled layers with dependency injection
+
+---
+
+## 🏗 Architecture
+
+The project follows a layered Clean Architecture model, ensuring clear separation between business logic, data handling, and presentation.
+
+```
+UI → UseCase → Repository → Data / Device
+```
+```mermaid
+flowchart LR
+    UI[UI Layer]
+    UC[UseCase Layer]
+    REPO[Repository Layer]
+    DATA[Data Layer]
+
+    UI --> UC
+    UC --> REPO
+    REPO --> DATA
+
+```mermaid
+    flowchart TB
+
+    subgraph UI
+        VM[ViewModels]
+        UIComp[Compose Screens]
+    end
+
+    subgraph Domain
+        UC[UseCases]
+        MODEL[Models]
+    end
+
+    subgraph Data
+        REPO_IMPL[Repositories]
+        DAO[Room DAO]
+        ENTITY[Entities]
+    end
+
+    subgraph Device
+        MESH[Mesh Layer]
+        SERVICE[Services]
+    end
+
+    UIComp --> VM
+    VM --> UC
+    UC --> REPO_IMPL
+    REPO_IMPL --> DAO
+    REPO_IMPL --> MESH
+
+### 🔹 UI Layer
+
+* Built with Jetpack Compose
+* Contains ViewModels and Composable screens
+* Responsible only for rendering state and handling user input
+
+### 🔹 Domain Layer
+
+* Contains business logic and core models
+* Defines repository interfaces
+* Includes use cases that represent application actions
+
+### 🔹 Data Layer
+
+* Implements repository interfaces
+* Handles data sources (local database + mesh communication)
+* Maps between DTOs, entities, and domain models
+
+### 🔹 Device Layer
+
+* Contains Android-specific implementations
+* Handles hardware interactions (networking, permissions, services)
+* Encapsulates platform-dependent logic
+
+---
+
+## 🔄 Data Flow
+
+1. User sends a message from UI
+2. ViewModel triggers a UseCase
+3. UseCase calls Repository interface
+4. Repository interacts with:
+
+   * Local database (for persistence)
+   * Mesh layer (for transmission)
+5. Message is propagated to nearby devices
+6. Incoming messages are captured via event system
+7. Data is stored and UI updates reactively
+
+---
+```mermaid
+sequenceDiagram
+    participant User
+    participant UI
+    participant VM
+    participant UC
+    participant Repo
+    participant Mesh
+
+    User->>UI: Send message
+    UI->>VM: trigger
+    VM->>UC: invoke
+    UC->>Repo: send
+    Repo->>Mesh: transmit
+    Mesh-->>Repo: receive
+    Repo-->>VM: update
+    VM-->>UI: render
+
+## 🧩 Key Components
+
+### 📦 Mesh Communication Layer
+
+* Built on Nearby Connections API
+* Handles advertising, discovery, and connection lifecycle
+* Encapsulates packet creation and parsing
+
+### 🗄 Database Layer
+
+* Room Database for local storage
+* DAO-based data access
+* Type converters for complex data models
+
+### 🔗 Dependency Injection
+
+* Managed using Hilt
+* Provides loose coupling between layers
+* Centralized configuration of dependencies
+
+---
 
 ## 🛠 Tech Stack
+
 * **Language:** Kotlin
-* **Architecture:** Clean Architecture (UI -> Domain/UseCases -> Data -> Core)
-* **UI:** Jetpack Compose (Material 3)
-* **Dependency Injection:** Dagger Hilt
-* **Local Database:** Room Database
-* **Network Engine:** Customized Google Nearby Connections & Bluetooth LE
-* **Concurrency:** Kotlin Coroutines & Flows
+* **UI:** Jetpack Compose
+* **Architecture:** Clean Architecture
+* **Dependency Injection:** Hilt
+* **Database:** Room
+* **Async Programming:** Coroutines + Flow
+* **Networking:** Nearby Connections API
 
-## 🧬 Architecture Overview
-Crisis OS strictly adheres to Clean Architecture:
-* `core/`: EventBus, Permissions, Device APIs.
-* `data/`: Room DAOs, Mesh Handlers, DTOs, Repository Implementations.
-* `domain/`: UseCases, Domain Data Models, Repository Interfaces.
-* `ui/`: Compose Screens, ViewModels strictly driven by UseCases.
+---
 
-## 📷 Screenshots
-*(Add screenshots here)*
+## 📱 Application Flow
 
-## 📦 Getting Started
-1. Clone the repository.
-2. Open in Android Studio.
-3. Sync Gradle and build the project.
-4. Run on a physical Android device (Emulators do not fully support Nearby Connections mesh behavior).
+### 1. App Initialization
 
-### Permissions Required
-- `BLUETOOTH_ADVERTISE`, `BLUETOOTH_CONNECT`, `BLUETOOTH_SCAN`
-- `ACCESS_FINE_LOCATION`, `ACCESS_COARSE_LOCATION`
-- `NEARBY_WIFI_DEVICES`
-- `POST_NOTIFICATIONS`
+* Mesh services start in background
+* Device begins advertising and discovering peers
 
-## 🛡 License
-*(Add license details here)*
+### 2. Peer Discovery
+
+* Nearby devices appear dynamically
+* Users can view available connections
+
+### 3. Connection Establishment
+
+* Devices connect directly or through mesh
+* Connection state is tracked in real-time
+
+### 4. Messaging
+
+* Messages are created and stored locally
+* Sent through mesh network
+* Received messages are persisted and displayed instantly
+
+---
+
+## 🔒 Design Principles
+
+* **Offline-first approach** — functionality does not depend on internet
+* **Separation of concerns** — each layer has a single responsibility
+* **Scalability** — easy to extend with new features
+* **Testability** — domain logic is independent of Android framework
+* **Maintainability** — modular and organized codebase
+
+---
+
+## ⚙️ Setup & Installation
+
+### Requirements
+
+* Android Studio (latest stable version)
+* Android device (recommended for testing mesh features)
+
+### Steps
+
+```bash
+git clone https://github.com/Vishalchaudhary10/Crisis-Os-Mesh.git
+cd Crisis-Os-Mesh
+```
+
+1. Open the project in Android Studio
+2. Sync Gradle dependencies
+3. Connect a physical Android device
+4. Run the application
+
+---
+
+## ⚠️ Notes on Testing
+
+* Mesh communication works best on **real devices**, not emulators
+* Multiple devices are required to fully test peer-to-peer communication
+* Bluetooth and Location permissions must be enabled
+
+---
+
+## 📊 Project Highlights
+
+* Real-world use case implementation (offline communication)
+* Advanced architecture design (Clean Architecture)
+* Integration of low-level networking APIs
+* Reactive UI with modern Android development practices
+
+---
+
+## 🧠 What This Project Demonstrates
+
+This project is not just a messaging app—it demonstrates:
+
+* System design thinking
+* Handling of asynchronous distributed systems
+* Practical Clean Architecture implementation
+* Ability to manage complex data flow across multiple layers
+
+---
+
+## 📌 Conclusion
+
+Crisis OS is a practical demonstration of building resilient communication systems in constrained environments. It combines modern Android development practices with decentralized networking concepts to create a scalable and reliable solution for offline communication.
+
+The project showcases both technical depth and architectural discipline, making it a strong foundation for further development or real-world deployment in emergency communication scenarios.
