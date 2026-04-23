@@ -1,6 +1,11 @@
-package com.elv8.crisisos.data.mesh
+package com.elv8.crisisos.data.remote.mesh
 
+import com.elv8.crisisos.core.network.mesh.IMeshMessenger
 import android.content.Context
+import com.elv8.crisisos.data.dto.PacketFactory
+import com.elv8.crisisos.core.network.mesh.DomainSendResult
+import com.elv8.crisisos.domain.model.ChatMessage
+import com.elv8.crisisos.core.network.mesh.IMeshConnectionManager
 import android.util.Log
 import com.elv8.crisisos.core.debug.MeshLogger
 import com.elv8.crisisos.core.event.AppEvent
@@ -21,7 +26,7 @@ import com.elv8.crisisos.data.dto.payloads.SosPayload
 import com.elv8.crisisos.data.dto.payloads.SupplyPayload
 import com.elv8.crisisos.data.dto.payloads.SupplyAckPayload
 import com.elv8.crisisos.data.local.dao.MediaDao
-import com.elv8.crisisos.data.media.MediaFileManager
+import com.elv8.crisisos.device.media.MediaFileManager
 import com.elv8.crisisos.domain.model.MessageStatus
 import com.elv8.crisisos.domain.model.media.MediaStatus
 import com.elv8.crisisos.domain.model.media.MediaType
@@ -52,7 +57,7 @@ sealed class SendResult {
 @Singleton
 class MeshMessenger @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val connectionManager: MeshConnectionManager,
+    private val connectionManager: IMeshConnectionManager,
     private val outboxRepository: OutboxRepository,
     private val eventBus: EventBus,
     private val notificationBus: com.elv8.crisisos.core.notification.NotificationEventBus,
@@ -62,7 +67,23 @@ class MeshMessenger @Inject constructor(
     private val mediaDao: MediaDao,
     private val fileManager: MediaFileManager,
     private val scope: CoroutineScope
-) {
+) : IMeshMessenger  {
+
+    override suspend fun sendChatMessage(message: ChatMessage): DomainSendResult {
+        val chatPayload = ChatPayload(content = message.content, messageId = message.id)
+        val packet = PacketFactory.buildChatPacket(
+            senderId = message.senderId,
+            senderAlias = message.senderAlias,
+            payload = chatPayload
+        )
+
+        return when (send(packet)) {
+            is SendResult.Sent -> DomainSendResult.Sent
+            is SendResult.Queued -> DomainSendResult.Queued
+            is SendResult.Failed -> DomainSendResult.Failed
+        }
+    }
+
     private var localDeviceId: String = ""
 
     private val seenPacketIds: MutableSet<String> = Collections.synchronizedSet(
@@ -123,11 +144,11 @@ class MeshMessenger @Inject constructor(
         }
     }
 
-    fun setLocalDeviceId(id: String) {
+    override     fun setLocalDeviceId(id: String) {
         localDeviceId = id
     }
 
-    suspend fun send(packet: MeshPacket): SendResult {
+    override     suspend fun send(packet: MeshPacket): SendResult {
         if (System.currentTimeMillis() > packet.timestamp + (packet.ttl * 3_600_000L)) {
             log("Refused to send expired packet ${packet.packetId}")
             return SendResult.Failed("Packet TTL exceeded before send")

@@ -1,4 +1,4 @@
-package com.elv8.crisisos.data.mesh
+package com.elv8.crisisos.data.remote.mesh
 
 import com.google.android.gms.nearby.connection.Strategy
 

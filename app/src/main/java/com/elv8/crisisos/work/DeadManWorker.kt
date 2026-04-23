@@ -13,7 +13,7 @@ import com.elv8.crisisos.core.event.AppEvent
 import com.elv8.crisisos.core.event.EventBus
 import com.elv8.crisisos.data.dto.PacketFactory
 import com.elv8.crisisos.data.dto.payloads.SosPayload
-import com.elv8.crisisos.data.mesh.MeshMessenger
+import com.elv8.crisisos.data.remote.mesh.MeshMessenger
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import java.util.concurrent.TimeUnit

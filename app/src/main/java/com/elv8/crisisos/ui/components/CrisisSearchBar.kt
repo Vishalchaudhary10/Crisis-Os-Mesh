@@ -1,4 +1,4 @@
-﻿package com.elv8.crisisos.ui.components
+package com.elv8.crisisos.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween

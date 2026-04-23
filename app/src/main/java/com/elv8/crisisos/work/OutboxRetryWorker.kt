@@ -6,8 +6,8 @@ import androidx.work.CoroutineWorker
 import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkerParameters
-import com.elv8.crisisos.data.mesh.MeshMessenger
-import com.elv8.crisisos.data.mesh.SendResult
+import com.elv8.crisisos.data.remote.mesh.MeshMessenger
+import com.elv8.crisisos.data.remote.mesh.SendResult
 import com.elv8.crisisos.domain.repository.OutboxRepository
 import com.elv8.crisisos.data.local.dao.NotificationLogDao
 import dagger.assisted.Assisted

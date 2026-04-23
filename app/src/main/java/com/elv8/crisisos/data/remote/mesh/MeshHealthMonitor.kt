@@ -1,6 +1,7 @@
-package com.elv8.crisisos.data.mesh
+package com.elv8.crisisos.data.remote.mesh
 
 import android.util.Log
+import com.elv8.crisisos.core.network.mesh.IMeshConnectionManager
 import com.elv8.crisisos.core.debug.MeshLogger
 import com.elv8.crisisos.data.local.dao.OutboxDao
 import com.elv8.crisisos.domain.repository.OutboxRepository
@@ -25,7 +26,7 @@ data class MeshHealthStats(
 class MeshHealthMonitor @Inject constructor(
     private val outboxRepository: OutboxRepository,
     private val outboxDao: OutboxDao,
-    private val connectionManager: MeshConnectionManager,
+    private val connectionManager: IMeshConnectionManager,
     private val scope: CoroutineScope
 ) {
     private val _stats = MutableStateFlow(MeshHealthStats(0, 0, 0, 0, true))

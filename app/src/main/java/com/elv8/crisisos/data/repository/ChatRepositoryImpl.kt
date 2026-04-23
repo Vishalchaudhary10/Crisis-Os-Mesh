@@ -3,13 +3,12 @@ package com.elv8.crisisos.data.repository
 import com.elv8.crisisos.core.event.AppEvent
 import com.elv8.crisisos.core.event.EventBus
 import com.elv8.crisisos.data.dto.MeshPacketType
-import com.elv8.crisisos.data.dto.PacketFactory
 import com.elv8.crisisos.data.dto.PacketParser
 import com.elv8.crisisos.data.dto.payloads.ChatPayload
 import com.elv8.crisisos.data.local.dao.ChatDao
 import com.elv8.crisisos.data.local.entity.ChatMessageEntity
-import com.elv8.crisisos.data.mesh.MeshMessenger
-import com.elv8.crisisos.data.mesh.SendResult
+import com.elv8.crisisos.core.network.mesh.IMeshMessenger
+import com.elv8.crisisos.core.network.mesh.DomainSendResult
 import com.elv8.crisisos.domain.model.ChatMessage
 import com.elv8.crisisos.domain.model.MessageStatus
 import com.elv8.crisisos.domain.model.MessageType
@@ -23,7 +22,7 @@ import javax.inject.Inject
 
 class ChatRepositoryImpl @Inject constructor(
     private val chatDao: ChatDao,
-    private val messenger: MeshMessenger,
+    private val messenger: IMeshMessenger,
     private val eventBus: EventBus
 ) : MeshRepository {
 
@@ -34,20 +33,13 @@ class ChatRepositoryImpl @Inject constructor(
     }
 
     override suspend fun sendMessage(message: ChatMessage) {
-        val chatPayload = ChatPayload(content = message.content, messageId = message.id)
-        val packet = PacketFactory.buildChatPacket(
-            senderId = message.senderId,
-            senderAlias = message.senderAlias,
-            payload = chatPayload
-        )
-
         val entity = message.copy(deliveryStatus = MessageStatus.SENDING).toEntity()
         chatDao.insertMessage(entity)
 
-        when (messenger.send(packet)) {
-            is SendResult.Sent -> chatDao.markAsDelivered(message.id, MessageStatus.SENT)
-            is SendResult.Queued -> chatDao.markAsDelivered(message.id, MessageStatus.SENDING)
-            is SendResult.Failed -> chatDao.markAsDelivered(message.id, MessageStatus.FAILED)
+        when (messenger.sendChatMessage(message)) {
+            is DomainSendResult.Sent -> chatDao.markAsDelivered(message.id, MessageStatus.SENT)
+            is DomainSendResult.Queued -> chatDao.markAsDelivered(message.id, MessageStatus.SENDING)
+            is DomainSendResult.Failed -> chatDao.markAsDelivered(message.id, MessageStatus.FAILED)
         }
     }
 

@@ -1,4 +1,4 @@
-﻿package com.elv8.crisisos.ui.screens.discovery
+package com.elv8.crisisos.ui.screens.discovery
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable

@@ -3,6 +3,8 @@ package com.elv8.crisisos.di
 import android.content.Context
 import com.elv8.crisisos.core.event.EventBus
 import com.elv8.crisisos.core.event.EventLogger
+import com.elv8.crisisos.core.network.mesh.IMeshConnectionManager
+import com.elv8.crisisos.core.network.mesh.IMeshMessenger
 import dagger.Module
 import dagger.Provides
 import com.elv8.crisisos.core.permissions.MeshPermissionManager
@@ -13,9 +15,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import javax.inject.Singleton
-import com.elv8.crisisos.data.mesh.MeshConnectionManager
-import com.elv8.crisisos.data.mesh.MeshHealthMonitor
-import com.elv8.crisisos.data.mesh.MeshMessenger
+import com.elv8.crisisos.data.remote.mesh.MeshConnectionManager
+import com.elv8.crisisos.data.remote.mesh.MeshHealthMonitor
+import com.elv8.crisisos.data.remote.mesh.MeshMessenger
 import com.elv8.crisisos.data.local.dao.OutboxDao
 import com.elv8.crisisos.domain.repository.OutboxRepository
 import androidx.work.WorkManager
@@ -60,7 +62,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMeshRecoveryManager(
-        connectionManager: com.elv8.crisisos.data.mesh.MeshConnectionManager,
+        connectionManager: IMeshConnectionManager,
         permissionManager: com.elv8.crisisos.core.permissions.MeshPermissionManager,
         eventBus: com.elv8.crisisos.core.event.EventBus,
         scope: kotlinx.coroutines.CoroutineScope,
@@ -72,7 +74,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMeshDiagnostics(
-        connectionManager: MeshConnectionManager,
+        connectionManager: IMeshConnectionManager,
         permissionManager: com.elv8.crisisos.core.permissions.MeshPermissionManager,
         peerDao: com.elv8.crisisos.data.local.dao.PeerDao,
         scope: CoroutineScope
@@ -85,19 +87,16 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMeshConnectionManager(
-        @ApplicationContext context: Context,
-        eventBus: EventBus,
-        scope: CoroutineScope,
-        peerDao: com.elv8.crisisos.data.local.dao.PeerDao, peerRepositoryLazy: dagger.Lazy<com.elv8.crisisos.domain.repository.PeerRepository>
-    ): MeshConnectionManager {
-        return MeshConnectionManager(context, eventBus, scope, peerDao, peerRepositoryLazy)
+        impl: MeshConnectionManager
+    ): IMeshConnectionManager {
+        return impl
     }
 
     @Provides
     @Singleton
     fun provideMeshMessenger(
         @ApplicationContext context: Context,
-        connectionManager: MeshConnectionManager,
+        connectionManager: IMeshConnectionManager,
         outboxRepository: OutboxRepository,
         eventBus: EventBus,
         notificationBus: com.elv8.crisisos.core.notification.NotificationEventBus,
@@ -105,9 +104,9 @@ object AppModule {
         chatThreadDao: com.elv8.crisisos.data.local.dao.ChatThreadDao,
         mediaRepository: com.elv8.crisisos.domain.repository.MediaRepository,
         mediaDao: com.elv8.crisisos.data.local.dao.MediaDao,
-        fileManager: com.elv8.crisisos.data.media.MediaFileManager,
+        fileManager: com.elv8.crisisos.device.media.MediaFileManager,
         scope: CoroutineScope
-    ): MeshMessenger {
+    ): IMeshMessenger {
         return MeshMessenger(
             context = context,
             connectionManager = connectionManager,
@@ -128,7 +127,7 @@ object AppModule {
     fun provideMeshHealthMonitor(
         outboxRepository: OutboxRepository,
         outboxDao: OutboxDao,
-        connectionManager: MeshConnectionManager,
+        connectionManager: IMeshConnectionManager,
         scope: CoroutineScope
     ): MeshHealthMonitor {
         return MeshHealthMonitor(outboxRepository, outboxDao, connectionManager, scope)

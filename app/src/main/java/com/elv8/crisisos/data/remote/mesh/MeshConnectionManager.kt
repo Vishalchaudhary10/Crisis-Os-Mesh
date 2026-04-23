@@ -1,5 +1,7 @@
-package com.elv8.crisisos.data.mesh
+package com.elv8.crisisos.data.remote.mesh
 
+import com.elv8.crisisos.core.network.mesh.IMeshConnectionManager
+import kotlinx.coroutines.flow.Flow
 import android.content.Context
 import android.os.ParcelFileDescriptor
 import android.util.Log
@@ -36,26 +38,26 @@ class MeshConnectionManager @Inject constructor(
     private val scope: CoroutineScope,
     private val peerDao: PeerDao,
     private val peerRepositoryLazy: Lazy<PeerRepository>
-) {
+) : IMeshConnectionManager  {
     private val connectionsClient: ConnectionsClient = Nearby.getConnectionsClient(context)
 
     private val _connectedPeers = MutableStateFlow<Map<String, ConnectedPeer>>(emptyMap())
     private val _isAdvertising = MutableStateFlow(false)
     private val _isDiscovering = MutableStateFlow(false)
 
-    val connectedPeers: StateFlow<Map<String, ConnectedPeer>> = _connectedPeers.asStateFlow()
-    val isAdvertising: StateFlow<Boolean> = _isAdvertising.asStateFlow()
-    val isDiscovering: StateFlow<Boolean> = _isDiscovering.asStateFlow()
-    val peerCount = _connectedPeers.map { it.size }
+    override     val connectedPeers: StateFlow<Map<String, ConnectedPeer>> = _connectedPeers.asStateFlow()
+    override     val isAdvertising: StateFlow<Boolean> = _isAdvertising.asStateFlow()
+    override     val isDiscovering: StateFlow<Boolean> = _isDiscovering.asStateFlow()
+    override val peerCount: Flow<Int> = _connectedPeers.map { it.size }
 
     private lateinit var localAlias: String
     private var localCrsId: String = ""
 
-    fun getDiscoveryRestartCount(): Int = discoveryRestartCount
-    fun getLocalAlias(): String = if (::localAlias.isInitialized) localAlias else "UNKNOWN"
-    fun getLocalCrsId(): String = localCrsId
+    override     fun getDiscoveryRestartCount(): Int = discoveryRestartCount
+    override     fun getLocalAlias(): String = if (::localAlias.isInitialized) localAlias else "UNKNOWN"
+    override     fun getLocalCrsId(): String = localCrsId
 
-    val pendingAliases: MutableMap<String, String> = ConcurrentHashMap()
+    override     val pendingAliases: MutableMap<String, String> = ConcurrentHashMap()
     private val pendingCrsIds: MutableMap<String, String> = ConcurrentHashMap()
 
     // File transfer tracking
@@ -86,11 +88,11 @@ class MeshConnectionManager @Inject constructor(
     private val DISCOVERY_RESTART_DELAY_MS = 2_000L
     private var discoveryRestartCount = 0
 
-    fun setLocalCrsId(crsId: String) {
+    override     fun setLocalCrsId(crsId: String) {
         this.localCrsId = crsId
     }
 
-    fun updateLastSeen(endpointId: String) {
+    override     fun updateLastSeen(endpointId: String) {
         val crsId = pendingCrsIds[endpointId] ?: return
         val now = System.currentTimeMillis()
         
@@ -455,7 +457,7 @@ class MeshConnectionManager @Inject constructor(
         }
     }
 
-    fun startMesh(alias: String) {
+    override     fun startMesh(alias: String) {
         localAlias = alias
         startAdvertising()
         startDiscovery()
@@ -470,7 +472,7 @@ class MeshConnectionManager @Inject constructor(
         }
     }
 
-    fun startAdvertising() {
+    override     fun startAdvertising() {
         val options = AdvertisingOptions.Builder()
             .setStrategy(MeshConfig.STRATEGY)
             .build()
@@ -489,7 +491,7 @@ class MeshConnectionManager @Inject constructor(
             }
     }
 
-    fun startDiscovery() {
+    override     fun startDiscovery() {
         val options = DiscoveryOptions.Builder()
             .setStrategy(MeshConfig.STRATEGY)
             .build()
@@ -558,7 +560,7 @@ class MeshConnectionManager @Inject constructor(
         }
     }
 
-    fun getMeshDebugState(): String = buildString {
+    override     fun getMeshDebugState(): String = buildString {
         appendLine("=== CrisisOS Mesh Debug ===")
         appendLine("isAdvertising: ${_isAdvertising.value}")
         appendLine("isDiscovering: ${_isDiscovering.value}")
@@ -572,12 +574,12 @@ class MeshConnectionManager @Inject constructor(
         }
     }
 
-    fun stopAdvertising() {
+    override     fun stopAdvertising() {
         connectionsClient.stopAdvertising()
         _isAdvertising.value = false
     }
 
-    fun stopDiscovery() {
+    override     fun stopDiscovery() {
         connectionsClient.stopDiscovery()
         _isDiscovering.value = false
     }
@@ -591,7 +593,7 @@ class MeshConnectionManager @Inject constructor(
      * Send a pre-built file payload to a specific endpoint.
      * The caller creates Payload.fromFile() to capture payloadId before building the announce.
      */
-    fun sendFilePayload(endpointId: String, filePayload: Payload, fileId: String) {
+    override     fun sendFilePayload(endpointId: String, filePayload: Payload, fileId: String) {
         Log.e("MEDIA_DEBUG", "=== sendFilePayload CALLED === endpointId=$endpointId fileId=$fileId payloadId=${filePayload.id}")
         activeFileTransfers[filePayload.id] = fileId
 
@@ -614,7 +616,7 @@ class MeshConnectionManager @Inject constructor(
      * Convenience: open a file, create a Payload, and send it.
      * Returns the payloadId so the caller can include it in the announce packet.
      */
-    fun sendFileToEndpoint(endpointId: String, file: File, fileId: String): Long {
+    override     fun sendFileToEndpoint(endpointId: String, file: File, fileId: String): Long {
         return try {
             val pfd = ParcelFileDescriptor.open(file, ParcelFileDescriptor.MODE_READ_ONLY)
             val filePayload = Payload.fromFile(pfd)
@@ -713,7 +715,7 @@ class MeshConnectionManager @Inject constructor(
         }
     }
 
-    fun stopAll() {
+    override     fun stopAll() {
         MeshLogger.connection("stopAll() called � tearing down mesh")
         
         discoveryWatchdogJob?.cancel()
@@ -744,7 +746,7 @@ class MeshConnectionManager @Inject constructor(
         }
     }
 
-    fun disconnectFromEndpoint(endpointId: String) {
+    override     fun disconnectFromEndpoint(endpointId: String) {
         connectionsClient.disconnectFromEndpoint(endpointId)
         _connectedPeers.value = _connectedPeers.value - endpointId
         scope.launch { eventBus.emit(AppEvent.MeshEvent.PeerDisconnected(endpointId)) }

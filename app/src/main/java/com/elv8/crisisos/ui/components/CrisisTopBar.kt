@@ -1,4 +1,4 @@
-﻿package com.elv8.crisisos.ui.components
+package com.elv8.crisisos.ui.components
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material3.CenterAlignedTopAppBar

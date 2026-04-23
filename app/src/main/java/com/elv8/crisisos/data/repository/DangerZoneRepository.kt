@@ -11,7 +11,7 @@ import com.elv8.crisisos.data.dto.PacketParser
 import com.elv8.crisisos.data.dto.payloads.DangerPayload
 import com.elv8.crisisos.data.local.dao.DangerZoneDao
 import com.elv8.crisisos.data.local.entity.DangerZoneEntity
-import com.elv8.crisisos.data.mesh.MeshMessenger
+import com.elv8.crisisos.data.remote.mesh.MeshMessenger
 import com.elv8.crisisos.domain.model.DangerZone
 import com.elv8.crisisos.domain.model.ThreatLevel
 import com.elv8.crisisos.domain.repository.DangerZoneRepository

@@ -7,7 +7,6 @@ sealed class Screen(val route: String) {
     data class ChatThread(val threadId: String = "{threadId}") : Screen("chat_thread/$threadId") {
         fun createRoute(id: String) = "chat_thread/$id"
     }
-    data object Chat : Screen("chat")
     data object Sos : Screen("sos")
     data object DeadManSwitch : Screen("dead_man_switch")
     data object MissingPerson : Screen("missing_person")

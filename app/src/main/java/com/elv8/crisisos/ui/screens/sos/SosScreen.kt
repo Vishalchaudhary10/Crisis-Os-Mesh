@@ -1,4 +1,4 @@
-﻿package com.elv8.crisisos.ui.screens.sos
+package com.elv8.crisisos.ui.screens.sos
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState

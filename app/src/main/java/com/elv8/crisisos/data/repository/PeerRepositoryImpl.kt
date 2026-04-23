@@ -6,7 +6,7 @@ import com.elv8.crisisos.core.event.AppEvent
 import com.elv8.crisisos.core.event.EventBus
 import com.elv8.crisisos.data.local.dao.PeerDao
 import com.elv8.crisisos.data.local.entity.PeerEntity
-import com.elv8.crisisos.data.mesh.MeshConnectionManager
+import com.elv8.crisisos.data.remote.mesh.MeshConnectionManager
 import com.elv8.crisisos.domain.model.identity.CrsIdGenerator
 import com.elv8.crisisos.domain.model.peer.Peer
 import com.elv8.crisisos.domain.model.peer.PeerStatus

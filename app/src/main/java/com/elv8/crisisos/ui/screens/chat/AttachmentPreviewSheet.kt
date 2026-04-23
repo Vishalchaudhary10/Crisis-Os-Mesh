@@ -1,4 +1,4 @@
-package com.elv8.crisisos.ui.screens.chatv2
+package com.elv8.crisisos.ui.screens.chat
 
 import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
@@ -211,3 +211,4 @@ private fun formatFileSize(bytes: Long): String {
         else -> "${"%.1f".format(bytes / 1_000_000f)} MB"
     }
 }
+

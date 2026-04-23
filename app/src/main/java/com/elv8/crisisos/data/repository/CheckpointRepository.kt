@@ -11,7 +11,7 @@ import com.elv8.crisisos.data.dto.PacketParser
 import com.elv8.crisisos.data.dto.payloads.CheckpointPayload
 import com.elv8.crisisos.data.local.dao.CheckpointDao
 import com.elv8.crisisos.data.local.entity.CheckpointEntity
-import com.elv8.crisisos.data.mesh.MeshMessenger
+import com.elv8.crisisos.data.remote.mesh.MeshMessenger
 import com.elv8.crisisos.domain.model.Checkpoint
 import com.elv8.crisisos.domain.repository.CheckpointRepository
 import dagger.hilt.android.qualifiers.ApplicationContext

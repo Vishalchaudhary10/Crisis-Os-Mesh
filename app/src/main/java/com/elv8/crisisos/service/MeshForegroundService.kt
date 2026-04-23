@@ -16,10 +16,10 @@ import com.google.android.gms.nearby.Nearby
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.elv8.crisisos.data.mesh.MeshConnectionManager
-import com.elv8.crisisos.data.mesh.MeshHealthMonitor
+import com.elv8.crisisos.data.remote.mesh.MeshConnectionManager
+import com.elv8.crisisos.data.remote.mesh.MeshHealthMonitor
 import com.elv8.crisisos.core.permissions.MeshPermissionManager
-import com.elv8.crisisos.data.mesh.MeshMessenger
+import com.elv8.crisisos.data.remote.mesh.MeshMessenger
 import com.elv8.crisisos.core.notification.NotificationHandler
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope

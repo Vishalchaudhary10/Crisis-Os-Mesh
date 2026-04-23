@@ -1,2 +1,2 @@
-﻿package com.elv8.crisisos.data.local.db
+package com.elv8.crisisos.data.local.db
 

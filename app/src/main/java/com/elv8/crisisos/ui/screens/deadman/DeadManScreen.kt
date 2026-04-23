@@ -1,4 +1,4 @@
-﻿package com.elv8.crisisos.ui.screens.deadman
+package com.elv8.crisisos.ui.screens.deadman
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility

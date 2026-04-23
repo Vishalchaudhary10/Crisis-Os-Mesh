@@ -6,7 +6,7 @@ import com.elv8.crisisos.core.debug.MeshLogger
 import com.elv8.crisisos.core.event.AppEvent
 import com.elv8.crisisos.core.event.EventBus
 import com.elv8.crisisos.core.permissions.MeshPermissionManager
-import com.elv8.crisisos.data.mesh.MeshConnectionManager
+import com.elv8.crisisos.core.network.mesh.IMeshConnectionManager
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -30,7 +30,7 @@ data class RecoveryState(
 
 @Singleton
 class MeshRecoveryManager @Inject constructor(
-    private val connectionManager: MeshConnectionManager,
+    private val connectionManager: IMeshConnectionManager,
     private val permissionManager: MeshPermissionManager,
     private val eventBus: EventBus,
     private val scope: CoroutineScope,

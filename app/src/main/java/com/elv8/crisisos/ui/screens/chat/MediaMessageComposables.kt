@@ -1,4 +1,4 @@
-package com.elv8.crisisos.ui.screens.chatv2
+package com.elv8.crisisos.ui.screens.chat
 
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -356,4 +356,5 @@ private fun formatDuration(ms: Long): String {
     val seconds = totalSeconds % 60
     return String.format(Locale.getDefault(), "%d:%02d", minutes, seconds)
 }
+
 

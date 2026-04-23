@@ -1,4 +1,4 @@
-package com.elv8.crisisos.data.mesh
+package com.elv8.crisisos.data.remote.mesh
 
 /*
   CRISISOS MEDIA MESH TRANSFER — FUTURE IMPLEMENTATION PLAN

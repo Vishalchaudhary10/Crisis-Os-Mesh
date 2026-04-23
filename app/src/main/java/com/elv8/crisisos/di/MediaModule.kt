@@ -2,11 +2,11 @@ package com.elv8.crisisos.di
 
 import android.content.Context
 import com.elv8.crisisos.data.local.dao.MediaDao
-import com.elv8.crisisos.data.media.MediaFileManager
+import com.elv8.crisisos.device.media.MediaFileManager
 import com.elv8.crisisos.data.repository.MediaRepositoryImpl
 import com.elv8.crisisos.domain.repository.MediaRepository
-import com.elv8.crisisos.data.media.VoiceRecorder
-import com.elv8.crisisos.data.media.MediaPickerHelper
+import com.elv8.crisisos.device.media.VoiceRecorder
+import com.elv8.crisisos.device.media.MediaPickerHelper
 import com.elv8.crisisos.core.permissions.MediaPermissionManager
 import dagger.Module
 import dagger.Provides

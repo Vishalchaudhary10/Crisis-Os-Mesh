@@ -7,7 +7,7 @@ import com.elv8.crisisos.core.debug.MeshLogger
 import com.elv8.crisisos.data.local.dao.MediaDao
 import com.elv8.crisisos.data.local.entity.toDomain
 import com.elv8.crisisos.data.local.entity.toEntity
-import com.elv8.crisisos.data.media.MediaFileManager
+import com.elv8.crisisos.device.media.MediaFileManager
 import com.elv8.crisisos.domain.model.media.MediaItem
 import com.elv8.crisisos.domain.model.media.MediaStatus
 import com.elv8.crisisos.domain.model.media.MediaType

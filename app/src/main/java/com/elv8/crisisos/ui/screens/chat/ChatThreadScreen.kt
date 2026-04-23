@@ -1,4 +1,4 @@
-package com.elv8.crisisos.ui.screens.chatv2
+package com.elv8.crisisos.ui.screens.chat
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.foundation.gestures.draggable
@@ -737,3 +737,4 @@ fun TypingIndicatorRow() {
 }
 }
 }
+

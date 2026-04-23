@@ -1,4 +1,4 @@
-package com.elv8.crisisos.ui.screens.chatv2
+package com.elv8.crisisos.ui.screens.chat
 
 import android.net.Uri
 import android.util.Log
@@ -10,9 +10,9 @@ import com.elv8.crisisos.domain.model.chat.Message
 import com.elv8.crisisos.domain.repository.IdentityRepository
 import com.elv8.crisisos.domain.repository.ThreadChatRepository
 import com.elv8.crisisos.domain.repository.MediaRepository
-import com.elv8.crisisos.data.media.MediaPickerHelper
-import com.elv8.crisisos.data.media.VoiceRecorder
-import com.elv8.crisisos.data.media.RecordingState
+import com.elv8.crisisos.device.media.MediaPickerHelper
+import com.elv8.crisisos.device.media.VoiceRecorder
+import com.elv8.crisisos.device.media.RecordingState
 import com.elv8.crisisos.domain.model.media.MediaPickResult
 import com.elv8.crisisos.domain.model.media.PickError
 import com.elv8.crisisos.domain.model.media.MediaAttachment
@@ -53,7 +53,7 @@ class ChatThreadViewModel @Inject constructor(
     private val mediaRepository: MediaRepository,
     private val mediaPickerHelper: MediaPickerHelper,
     private val voiceRecorder: VoiceRecorder,
-    private val audioPlayer: com.elv8.crisisos.data.media.AudioPlayer,
+    private val audioPlayer: com.elv8.crisisos.device.media.AudioPlayer,
     @dagger.hilt.android.qualifiers.ApplicationContext private val context: android.content.Context,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -69,19 +69,19 @@ class ChatThreadViewModel @Inject constructor(
         viewModelScope.launch {
             audioPlayer.playbackState.collect { state ->
                 when (state) {
-                    is com.elv8.crisisos.data.media.AudioPlaybackState.Playing -> {
+                    is com.elv8.crisisos.device.media.AudioPlaybackState.Playing -> {
                         _uiState.update { it.copy(playingAudioId = state.mediaId) }
                     }
-                    is com.elv8.crisisos.data.media.AudioPlaybackState.Paused -> {
+                    is com.elv8.crisisos.device.media.AudioPlaybackState.Paused -> {
                         _uiState.update { it.copy(playingAudioId = null) }
                     }
-                    is com.elv8.crisisos.data.media.AudioPlaybackState.Completed -> {
+                    is com.elv8.crisisos.device.media.AudioPlaybackState.Completed -> {
                         _uiState.update { it.copy(playingAudioId = null) }
                     }
-                    is com.elv8.crisisos.data.media.AudioPlaybackState.Error -> {
+                    is com.elv8.crisisos.device.media.AudioPlaybackState.Error -> {
                         _uiState.update { it.copy(playingAudioId = null, mediaErrorMessage = state.message) }
                     }
-                    com.elv8.crisisos.data.media.AudioPlaybackState.Idle -> {
+                    com.elv8.crisisos.device.media.AudioPlaybackState.Idle -> {
                         _uiState.update { it.copy(playingAudioId = null) }
                     }
                 }
@@ -312,14 +312,14 @@ class ChatThreadViewModel @Inject constructor(
     fun toggleAudioPlayback(id: String) {
         viewModelScope.launch {
             val currentState = audioPlayer.playbackState.value
-            val isSameMedia = (currentState as? com.elv8.crisisos.data.media.AudioPlaybackState.Playing)?.mediaId == id ||
-                              (currentState as? com.elv8.crisisos.data.media.AudioPlaybackState.Paused)?.mediaId == id ||
-                              (currentState as? com.elv8.crisisos.data.media.AudioPlaybackState.Completed)?.mediaId == id
+            val isSameMedia = (currentState as? com.elv8.crisisos.device.media.AudioPlaybackState.Playing)?.mediaId == id ||
+                              (currentState as? com.elv8.crisisos.device.media.AudioPlaybackState.Paused)?.mediaId == id ||
+                              (currentState as? com.elv8.crisisos.device.media.AudioPlaybackState.Completed)?.mediaId == id
             
             if (isSameMedia) {
                 when (currentState) {
-                    is com.elv8.crisisos.data.media.AudioPlaybackState.Playing -> audioPlayer.pause()
-                    is com.elv8.crisisos.data.media.AudioPlaybackState.Paused, is com.elv8.crisisos.data.media.AudioPlaybackState.Completed -> {
+                    is com.elv8.crisisos.device.media.AudioPlaybackState.Playing -> audioPlayer.pause()
+                    is com.elv8.crisisos.device.media.AudioPlaybackState.Paused, is com.elv8.crisisos.device.media.AudioPlaybackState.Completed -> {
                         // We can fetch item to reuse the URI
                         val item = mediaRepository.getMediaItem(id)
                         val uri = item?.localUri ?: item?.remoteUri
@@ -406,3 +406,4 @@ class ChatThreadViewModel @Inject constructor(
         }
     }
 }
+

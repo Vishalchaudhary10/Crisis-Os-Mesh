@@ -21,9 +21,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.elv8.crisisos.ui.screens.discovery.PeerDiscoveryScreen
 import com.elv8.crisisos.ui.screens.aiassistant.AiAssistantScreen
-import com.elv8.crisisos.ui.screens.chat.ChatScreen
-import com.elv8.crisisos.ui.screens.chatv2.ChatListScreen
-import com.elv8.crisisos.ui.screens.chatv2.ChatThreadScreen
+import com.elv8.crisisos.ui.screens.chat.ChatListScreen
+import com.elv8.crisisos.ui.screens.chat.ChatThreadScreen
 import com.elv8.crisisos.ui.screens.childalert.ChildAlertScreen
 import com.elv8.crisisos.ui.screens.checkpoint.CheckpointScreen
 import com.elv8.crisisos.ui.screens.fakenews.FakeNewsScreen
@@ -36,7 +35,7 @@ import com.elv8.crisisos.ui.screens.maps.MapsScreen
 import com.elv8.crisisos.ui.screens.missingperson.MissingPersonScreen
 import com.elv8.crisisos.ui.screens.sos.SosScreen
 import com.elv8.crisisos.ui.screens.supply.SupplyScreen
-import com.elv8.crisisos.ui.screens.chatv2.ChatHubScreen
+import com.elv8.crisisos.ui.screens.chat.ChatHubScreen
 
 @Composable
 fun CrisisNavGraph(
@@ -90,9 +89,6 @@ fun CrisisNavGraph(
                     navController.navigate("peer_profile/$crsId?threadId=${threadId}&fromChat=true")
                 }
             )
-        }
-        composable(Screen.Chat.route) { 
-            ChatScreen(onNavigateBack = { navController.popBackStack() }) 
         }
         composable(
             route = Screen.Sos.route,
@@ -215,4 +211,5 @@ composable(Screen.MessageRequests.route) {
 
     }
 }
+
 

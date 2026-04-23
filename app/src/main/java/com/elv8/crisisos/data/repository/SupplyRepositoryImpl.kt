@@ -6,8 +6,8 @@ import com.elv8.crisisos.data.dto.PacketFactory
 import com.elv8.crisisos.data.dto.payloads.SupplyPayload
 import com.elv8.crisisos.data.local.dao.SupplyDao
 import com.elv8.crisisos.data.local.entity.SupplyRequestEntity
-import com.elv8.crisisos.data.mesh.MeshMessenger
-import com.elv8.crisisos.data.mesh.SendResult
+import com.elv8.crisisos.data.remote.mesh.MeshMessenger
+import com.elv8.crisisos.data.remote.mesh.SendResult
 import com.elv8.crisisos.domain.model.RequestStatus
 import com.elv8.crisisos.domain.model.SupplyRequest
 import com.elv8.crisisos.data.dto.payloads.SupplyAckPayload

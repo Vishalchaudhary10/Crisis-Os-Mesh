@@ -1,4 +1,4 @@
-package com.elv8.crisisos.data.media
+package com.elv8.crisisos.device.media
 
 import android.content.Context
 import android.net.Uri

@@ -1,4 +1,4 @@
-﻿package com.elv8.crisisos.ui.screens.discovery
+package com.elv8.crisisos.ui.screens.discovery
 
 import androidx.lifecycle.ViewModel
 import com.elv8.crisisos.core.debug.MeshDiagnostics

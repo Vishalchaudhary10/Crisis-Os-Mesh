@@ -1,4 +1,4 @@
-package com.elv8.crisisos.ui.screens.chatv2
+package com.elv8.crisisos.ui.screens.chat
 
 import androidx.compose.animation.*
 import androidx.compose.foundation.Canvas
@@ -272,6 +272,7 @@ fun UnreadBadge(count: Int) {
         )
     }
 }
+
 
 
 

@@ -6,7 +6,7 @@ import com.elv8.crisisos.data.dto.PacketFactory
 import com.elv8.crisisos.data.dto.payloads.MissingPersonPayload
 import com.elv8.crisisos.data.local.dao.MissingPersonDao
 import com.elv8.crisisos.data.local.entity.MissingPersonEntity
-import com.elv8.crisisos.data.mesh.MeshMessenger
+import com.elv8.crisisos.data.remote.mesh.MeshMessenger
 import com.elv8.crisisos.domain.repository.MissingPersonRepository
 import com.elv8.crisisos.ui.screens.missingperson.RegisteredPerson
 import kotlinx.coroutines.flow.Flow

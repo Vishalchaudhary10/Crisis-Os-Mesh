@@ -9,7 +9,7 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.Constraints
 import com.elv8.crisisos.data.local.dao.MediaDao
-import com.elv8.crisisos.data.media.MediaFileManager
+import com.elv8.crisisos.device.media.MediaFileManager
 import com.elv8.crisisos.domain.model.media.MediaType
 import com.elv8.crisisos.domain.repository.MediaRepository
 import dagger.assisted.Assisted

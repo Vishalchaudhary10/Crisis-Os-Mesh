@@ -1,4 +1,4 @@
-﻿package com.elv8.crisisos
+package com.elv8.crisisos
 
 import android.content.Context
 import com.elv8.crisisos.data.local.db.CrisisDatabase

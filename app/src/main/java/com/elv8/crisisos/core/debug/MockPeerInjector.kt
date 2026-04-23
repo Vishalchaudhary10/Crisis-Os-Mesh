@@ -1,4 +1,4 @@
-ï»¿package com.elv8.crisisos.core.debug
+package com.elv8.crisisos.core.debug
 
 import android.util.Log
 import com.elv8.crisisos.core.debug.MeshLogger
@@ -42,7 +42,7 @@ class MockPeerInjector @Inject constructor(
                     publicKey = null
                 )
                 peerDao.insert(entity)
-                Log.d("CrisisOS_Debug", "Mock peer injected â€” $alias ($crsId)")
+                Log.d("CrisisOS_Debug", "Mock peer injected — $alias ($crsId)")
             }
         }
     }
@@ -57,7 +57,7 @@ class MockPeerInjector @Inject constructor(
                     val distance = ((-fluctuated - 35) / 55f * 95f + 5f)
                     peerDao.updateSignal(crsId, fluctuated, distance)
                     peerDao.touchLastSeen(crsId, System.currentTimeMillis())
-                    Log.v("CrisisOS_Debug", "Mock signal update â€” $alias: ${fluctuated}dBm")
+                    Log.v("CrisisOS_Debug", "Mock signal update — $alias: ${fluctuated}dBm")
                 }
             }
         }
@@ -68,7 +68,7 @@ class MockPeerInjector @Inject constructor(
             withContext(Dispatchers.IO) {
                 peerDao.delete(crsId)
             }
-            Log.d("CrisisOS_Debug", "Mock peer removed â€” $crsId")
+            Log.d("CrisisOS_Debug", "Mock peer removed — $crsId")
         }
     }
 }

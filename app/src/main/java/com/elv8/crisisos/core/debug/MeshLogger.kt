@@ -1,4 +1,4 @@
-ï»¿package com.elv8.crisisos.core.debug
+package com.elv8.crisisos.core.debug
 
 import android.util.Log
 import com.elv8.crisisos.core.debug.MeshLogger
@@ -20,9 +20,9 @@ object MeshLogger {
     fun warn(tag: String, msg: String) = Log.w("CrisisOS_$tag", "[${ts()}] $msg")
     fun error(tag: String, msg: String, e: Throwable? = null) = Log.e("CrisisOS_$tag", "[${ts()}] $msg", e)
 
-    // adb logcat -s CrisisOS_Discovery     â€” peer discovery events only
-    // adb logcat -s CrisisOS_Connection    â€” handshake events only
-    // adb logcat -s CrisisOS_Room          â€” Room insert/update events
-    // adb logcat -s CrisisOS_Service       â€” service lifecycle
-    // adb logcat -s CrisisOS_*             â€” ALL CrisisOS logs (no system noise)
+    // adb logcat -s CrisisOS_Discovery     — peer discovery events only
+    // adb logcat -s CrisisOS_Connection    — handshake events only
+    // adb logcat -s CrisisOS_Room          — Room insert/update events
+    // adb logcat -s CrisisOS_Service       — service lifecycle
+    // adb logcat -s CrisisOS_*             — ALL CrisisOS logs (no system noise)
 }

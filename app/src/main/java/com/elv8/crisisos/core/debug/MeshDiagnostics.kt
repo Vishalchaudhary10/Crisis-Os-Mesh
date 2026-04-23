@@ -1,8 +1,8 @@
-﻿package com.elv8.crisisos.core.debug
+package com.elv8.crisisos.core.debug
 
 import com.elv8.crisisos.core.permissions.MeshPermissionManager
 import com.elv8.crisisos.data.local.dao.PeerDao
-import com.elv8.crisisos.data.mesh.MeshConnectionManager
+import com.elv8.crisisos.core.network.mesh.IMeshConnectionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +32,7 @@ data class DiagnosticsSnapshot(
 
 @Singleton
 class MeshDiagnostics @Inject constructor(
-    private val connectionManager: MeshConnectionManager,
+    private val connectionManager: IMeshConnectionManager,
     private val permissionManager: MeshPermissionManager,
     private val peerDao: PeerDao,
     private val scope: CoroutineScope

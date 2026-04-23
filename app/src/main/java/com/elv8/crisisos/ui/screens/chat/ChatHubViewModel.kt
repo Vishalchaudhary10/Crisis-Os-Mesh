@@ -1,4 +1,4 @@
-package com.elv8.crisisos.ui.screens.chatv2
+package com.elv8.crisisos.ui.screens.chat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -35,3 +35,4 @@ class ChatHubViewModel @Inject constructor(
         activeTab.value = index
     }
 }
+

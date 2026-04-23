@@ -2,7 +2,7 @@ package com.elv8.crisisos.data.repository
 
 import com.elv8.crisisos.data.local.dao.PeerDao
 import com.elv8.crisisos.data.local.entity.PeerEntity
-import com.elv8.crisisos.data.mesh.MeshConnectionManager
+import com.elv8.crisisos.data.remote.mesh.MeshConnectionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

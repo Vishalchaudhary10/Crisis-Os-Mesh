@@ -1,4 +1,4 @@
-﻿package com.elv8.crisisos.core.permissions
+package com.elv8.crisisos.core.permissions
 
 import android.Manifest
 import android.content.Context

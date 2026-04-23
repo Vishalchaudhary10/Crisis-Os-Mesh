@@ -1,4 +1,4 @@
-﻿package com.elv8.crisisos.ui.home
+package com.elv8.crisisos.ui.home
 
 import androidx.lifecycle.ViewModel
 import com.elv8.crisisos.core.permissions.MeshPermissionManager

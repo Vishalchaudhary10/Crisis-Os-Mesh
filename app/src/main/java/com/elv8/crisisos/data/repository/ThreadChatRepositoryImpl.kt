@@ -37,9 +37,9 @@ import com.elv8.crisisos.data.local.dao.MediaDao
 import com.elv8.crisisos.domain.model.media.MediaItem
 import com.elv8.crisisos.domain.model.media.MediaStatus
 import com.elv8.crisisos.domain.model.media.MediaType
-import com.elv8.crisisos.data.mesh.MeshMessenger
-import com.elv8.crisisos.data.mesh.MeshConnectionManager
-import com.elv8.crisisos.data.mesh.SendResult
+import com.elv8.crisisos.data.remote.mesh.MeshMessenger
+import com.elv8.crisisos.data.remote.mesh.MeshConnectionManager
+import com.elv8.crisisos.data.remote.mesh.SendResult
 
 @Singleton
 class ThreadChatRepositoryImpl @Inject constructor(
@@ -49,7 +49,7 @@ class ThreadChatRepositoryImpl @Inject constructor(
     private val identityRepository: IdentityRepository,
     private val notificationBus: NotificationEventBus,
     private val eventBus: EventBus,
-    private val messenger: com.elv8.crisisos.data.mesh.MeshMessenger,
+    private val messenger: com.elv8.crisisos.data.remote.mesh.MeshMessenger,
     private val connectionManager: MeshConnectionManager,
     private val scope: CoroutineScope
 ) : ThreadChatRepository {
@@ -219,9 +219,9 @@ class ThreadChatRepositoryImpl @Inject constructor(
                 targetId = thread.peerCrsId
             )
             when (messenger.send(packet)) {
-                is com.elv8.crisisos.data.mesh.SendResult.Sent -> chatDao.updateMessageStatus(messageId, MessageStatus.SENT.name)
-                is com.elv8.crisisos.data.mesh.SendResult.Queued -> chatDao.updateMessageStatus(messageId, MessageStatus.SENDING.name)
-                is com.elv8.crisisos.data.mesh.SendResult.Failed -> chatDao.updateMessageStatus(messageId, MessageStatus.FAILED.name)
+                is com.elv8.crisisos.data.remote.mesh.SendResult.Sent -> chatDao.updateMessageStatus(messageId, MessageStatus.SENT.name)
+                is com.elv8.crisisos.data.remote.mesh.SendResult.Queued -> chatDao.updateMessageStatus(messageId, MessageStatus.SENDING.name)
+                is com.elv8.crisisos.data.remote.mesh.SendResult.Failed -> chatDao.updateMessageStatus(messageId, MessageStatus.FAILED.name)
             }
         } else {
             chatDao.updateMessageStatus(messageId, MessageStatus.SENT.name)

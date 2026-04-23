@@ -110,7 +110,7 @@ fun FullscreenMediaViewer(
                     Text("Video playback — ExoPlayer integration in next phase", color = Color.White)
                 }
                 MediaType.AUDIO -> {
-                    com.elv8.crisisos.ui.screens.chatv2.AudioMessageBubble(
+                    com.elv8.crisisos.ui.screens.chat.AudioMessageBubble(
                         mediaId = mediaItem.mediaId ?: "",
                         durationMs = mediaItem.durationMs,
                         isOwn = false,
@@ -127,3 +127,4 @@ fun FullscreenMediaViewer(
         }
     }
 }
+
